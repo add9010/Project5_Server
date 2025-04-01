@@ -163,7 +163,7 @@ void GameWorld::processMonsterUpdate(Packet& packet)
 }
 
 
-void GameWorld::sendWorldData()
+void GameWorld::sendWorldData() // 보낼 데이터
 {
 	while (running)
 	{
@@ -183,17 +183,17 @@ void GameWorld::sendWorldData()
 			worldPacket.write<float>(player->getPosY());  // Y 좌표
 		}
 		unlockPlayers();
+		std::vector<uint8_t> serializedPacket = worldPacket.Serialize();  // 패킷 직렬화
+		const char* sendBuffer = reinterpret_cast<const char*>(serializedPacket.data());
 		// 직렬화된 월드 데이터를 모든 플레이어에게 브로드캐스트
 		for (auto& pair : players)
 		{
 			PlayerData* player = pair.second;
-			std::vector<uint8_t> serializedPacket = worldPacket.Serialize();  // 패킷 직렬화
-			const char* sendBuffer = reinterpret_cast<const char*>(serializedPacket.data());
 			int bytesSent = send(player->getClientSession().getClientSocket(), sendBuffer
 				, static_cast<int>(serializedPacket.size()), 0);
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));  // 1초 대기 (주기적으로 실행)
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));  // 보내는 속도 조절(서버에서 클라이언트들로)
 	}
 }
 
