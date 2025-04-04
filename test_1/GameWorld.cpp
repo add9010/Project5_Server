@@ -178,9 +178,10 @@ void GameWorld::sendWorldData() // 보낼 데이터
 		for (auto& pair : players)
 		{
 			PlayerData* player = pair.second;
-			worldPacket.writeString(player->getName());  // 플레이어 이름
+			worldPacket.writeString(player->getName());   // 플레이어 이름
 			worldPacket.write<float>(player->getPosX());  // X 좌표
 			worldPacket.write<float>(player->getPosY());  // Y 좌표
+			worldPacket.write<uint8_t>(player->getAnimTypeAsByte());
 		}
 		unlockPlayers();
 		std::vector<uint8_t> serializedPacket = worldPacket.Serialize();  // 패킷 직렬화

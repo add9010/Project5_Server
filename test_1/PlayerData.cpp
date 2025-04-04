@@ -36,6 +36,9 @@ void PlayerData::processUpdate(Packet& packet)
     float x = packet.read<float>();
     float y = packet.read<float>();
     updatePosition(x, y);
+    
+    AnimType anieType = static_cast<AnimType>(packet.read<uint8_t>());
+    setAnimType(anieType);
 
     std::print("Player {} updated position to ({}, {})\n", getName(), x, y);
 }

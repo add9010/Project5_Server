@@ -12,6 +12,17 @@ enum class PacketType : uint8_t
     WorldUpdate = 0x04
 };
 
+enum class AnimType : uint8_t
+{
+    Idle = 0x00,
+    Run = 0x01,
+    Attack = 0x02,
+    Roll = 0x03,
+    Hit = 0x04,
+    Die = 0x05
+};
+
+
 struct PacketHeader
 {
     PacketType type;   // 패킷의 타입 (예: 메시지, 명령 등)
